@@ -132,9 +132,27 @@ const cancelRegistration = async (req, res) => {
 };
 
 
+const getRegistrations = async (req, res) => {
+  try {
+    const registrations = await Registration.find({
+      status: "ACTIVE",
+    }).populate("eventId", "name");
+
+    res.status(200).json({
+      success: true,
+      data: registrations,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 
 module.exports = {
   registerUser,
   cancelRegistration,
+  getRegistrations,
 };

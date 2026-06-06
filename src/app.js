@@ -1,10 +1,14 @@
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger/swagger");
+
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
 const eventRoutes = require("./routes/event.routes");
-
+const registrationRoutes = require("./routes/registration.routes");
+ 
 const app = express();
 
 app.use(express.json());
@@ -20,5 +24,15 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/events", eventRoutes);
+app.use(
+  "/api/registrations",
+  registrationRoutes
+);
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec)
+);
 
 module.exports = app;

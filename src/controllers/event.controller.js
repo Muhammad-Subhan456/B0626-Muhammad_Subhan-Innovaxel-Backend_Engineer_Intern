@@ -1,4 +1,5 @@
 const Event = require("../models/Event");
+const Registration = require("../models/Registration");
 
 const createEvent = async (req, res) => {
   try {
@@ -71,10 +72,29 @@ const getEvents = async (req, res) => {
 
     const events = await query;
 
+    const formattedEvents = await Promise.all(
+      events.map(async (event) => {
+        const totalRegistrations =
+          await Registration.countDocuments({
+            eventId: event._id,
+            status: "ACTIVE",
+          });
+
+        return {
+          _id: event._id,
+          name: event.name,
+          totalSeats: event.totalSeats,
+          availableSeats: event.availableSeats,
+          totalRegistrations,
+          eventDate: event.eventDate,
+        };
+      })
+    );
+
     res.status(200).json({
       success: true,
-      count: events.length,
-      data: events,
+      count: formattedEvents.length,
+      data: formattedEvents,
     });
   } catch (error) {
     res.status(500).json({

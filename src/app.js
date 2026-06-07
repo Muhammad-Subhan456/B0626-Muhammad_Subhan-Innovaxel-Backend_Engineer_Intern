@@ -16,9 +16,9 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      process.env.FRONTEND_URL,
+      "https://b0626-muhammad-subhan-innovaxel-bac-nine.vercel.app"
     ],
-    credentials: true,
+    credentials: true
   })
 );
 app.use(helmet());

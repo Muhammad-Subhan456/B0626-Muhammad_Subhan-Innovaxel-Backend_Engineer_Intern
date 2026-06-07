@@ -14,11 +14,8 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://b0626-muhammad-subhan-innovaxel-bac-nine.vercel.app"
-    ],
-    credentials: true
+    origin: true,
+    credentials: true,
   })
 );
 app.use(helmet());
